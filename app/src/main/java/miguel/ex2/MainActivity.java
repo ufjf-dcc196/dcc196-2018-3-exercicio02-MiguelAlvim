@@ -15,7 +15,7 @@ import android.widget.ListView;
 import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
-    Button bttAdd,bttEdit;
+    Button bttAdd,bttEdit,bttDel;
     EditText txtAdd,txtEdit;
     ListView list;
 
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        bttDel = findViewById(R.id.bttDel);
         bttAdd = findViewById(R.id.bttAdd);
         txtAdd = findViewById(R.id.txtAdd);
         bttEdit = findViewById(R.id.bttEdit);
@@ -76,6 +77,18 @@ public class MainActivity extends AppCompatActivity {
                 long id = bd.update("series", vals, "id = ?", args);
                 if(id>0){
                     linkedListNames.set(listPosition,txtEdit.getText().toString());
+                    arrayAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+        bttDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] args = {linkedListIds.get(listPosition)+""};
+                long id = bd.delete("series", "id = ?", args);
+                if(id>0){
+                    linkedListNames.remove(listPosition);
+                    linkedListIds.remove(listPosition);
                     arrayAdapter.notifyDataSetChanged();
                 }
             }
